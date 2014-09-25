@@ -5,52 +5,13 @@ import (
 	"testing"
 )
 
-type TestMessage struct {
-	value8   uint8
-	value32  uint32
-	value64  uint64
-	valueStr string
-}
-
-func NewTestMessage() *TestMessage {
-	msg := &TestMessage{}
-	return msg
-}
-
-func (msg *TestMessage) SizeOfBytes() uint {
-	return (SizeOfUint32 + SizeOfUint64)
-}
-
-func (msg *TestMessage) WritePacket(ws *ByteWriteStream) {
-	ws.WriteUint8(msg.value8)
-	ws.WriteUint32(msg.value32)
-	ws.WriteUint64(msg.value64)
-	ws.WriteString(msg.valueStr)
-}
-
-func (msg *TestMessage) ReadPacket(rs *ByteReadStream) bool {
-	if rs.ReadUint8(&msg.value8) == false {
-		return false
-	}
-	if rs.ReadUint32(&msg.value32) == false {
-		return false
-	}
-	if rs.ReadUint64(&msg.value64) == false {
-		return false
-	}
-	if rs.ReadString(&msg.valueStr) == false {
-		return false
-	}
-	return true
-}
-
 func TestMessageCodec(t *testing.T) {
 
 	var msg TestMessage
-	msg.value8 = 23
-	msg.value32 = 777
-	msg.value64 = 8888888
-	msg.valueStr = "hello i'm hero"
+	msg.Value8 = 23
+	msg.Value32 = 777
+	msg.Value64 = 8888888
+	msg.ValueStr = "hello i'm hero"
 
 	// encode message //////////////////////////////
 	packBuffer := NewMsgBuffer()

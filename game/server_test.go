@@ -32,10 +32,10 @@ func Test_Server(t *testing.T) {
 	)
 
 	var msg TestMessage
-	msg.value8 = 23
-	msg.value32 = 777
-	msg.value64 = 666111888
-	msg.valueStr = "hello i'm a new bird"
+	msg.Value8 = 23
+	msg.Value32 = 777
+	msg.Value64 = 666111888
+	msg.ValueStr = "hello i'm a new bird"
 
 	packBuffer := NewMsgBuffer()
 
