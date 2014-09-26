@@ -53,7 +53,7 @@ func MakePacket(msgbuff []byte, buff []byte) []byte {
 
 	ws := NewByteWriteStream(data)
 	h.WritePacket(ws)
-	ws.WriteByes(msgbuff)
+	ws.WriteBytes(msgbuff)
 
 	data = ws.GetByteBuffer()
 

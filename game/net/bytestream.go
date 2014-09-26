@@ -26,7 +26,7 @@ func NewByteWriteStream(buffer []byte) *ByteWriteStream {
 	return ws
 }
 
-func (ws *ByteWriteStream) WriteByes(b []byte) {
+func (ws *ByteWriteStream) WriteBytes(b []byte) {
 	ws.byteBuffer = append(ws.byteBuffer, b...)
 }
 
@@ -34,34 +34,34 @@ func (ws *ByteWriteStream) WriteUint8(value uint8) {
 	var bytes [SizeOfUint8]byte
 	b := bytes[:]
 	ws.bo.PutUint8(b, value)
-	ws.WriteByes(b)
+	ws.WriteBytes(b)
 }
 
 func (ws *ByteWriteStream) WriteUint16(value uint16) {
 	var bytes [SizeOfUint16]byte
 	b := bytes[:]
 	ws.bo.PutUint16(b, value)
-	ws.WriteByes(b)
+	ws.WriteBytes(b)
 }
 
 func (ws *ByteWriteStream) WriteUint32(value uint32) {
 	var bytes [SizeOfUint32]byte
 	b := bytes[:]
 	ws.bo.PutUint32(b, value)
-	ws.WriteByes(b)
+	ws.WriteBytes(b)
 }
 
 func (ws *ByteWriteStream) WriteUint64(value uint64) {
 	var bytes [SizeOfUint64]byte
 	b := bytes[:]
 	ws.bo.PutUint64(b, value)
-	ws.WriteByes(b)
+	ws.WriteBytes(b)
 }
 
 func (ws *ByteWriteStream) WriteString(value string) {
 	strLen := uint16(len(value))
 	ws.WriteUint16(strLen)
-	ws.WriteByes([]byte(value))
+	ws.WriteBytes([]byte(value))
 }
 
 func (ws *ByteWriteStream) GetByteBuffer() []byte {
