@@ -1,5 +1,6 @@
 package game
 
+// message is a unit for RPC
 const (
 	MSG_HEAD_SIZE   = 2 * SizeOfUint16
 	MSG_BUFFER_SIZE = 10 * 1024

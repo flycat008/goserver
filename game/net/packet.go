@@ -1,5 +1,6 @@
 package game
 
+// packet is a unit for net transfer
 const (
 	SIZE_OF_PACKETHEAD = 2 * SizeOfUint16
 )
