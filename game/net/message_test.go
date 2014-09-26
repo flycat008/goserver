@@ -14,7 +14,7 @@ func TestMessageCodec(t *testing.T) {
 	msg.ValueStr = "hello i'm hero"
 
 	// encode message //////////////////////////////
-	packBuffer := NewMsgByteBuffer()
+	packBuffer := NewMsgPacketBuffer()
 
 	ws := NewByteWriteStream(packBuffer.GetMsgBuffer())
 	msg.WritePacket(ws)

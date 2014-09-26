@@ -1,30 +1,5 @@
 package game
 
-// helper for writing Message
-type MsgByteBuffer struct {
-	byteBuffer []byte
-}
-
-func NewMsgByteBuffer() *MsgByteBuffer {
-
-	msgBuffer := &MsgByteBuffer{
-		byteBuffer: make([]byte, MSG_HEAD_SIZE, MSG_BUFFER_SIZE),
-	}
-	return msgBuffer
-}
-
-func (msgBuffer *MsgByteBuffer) GetByteBuffer() []byte {
-	return msgBuffer.byteBuffer
-}
-
-func (msgBuffer *MsgByteBuffer) GetHeadBuffer() []byte {
-	return msgBuffer.byteBuffer[:0]
-}
-
-func (msgBuffer *MsgByteBuffer) GetMsgBuffer() []byte {
-	return msgBuffer.byteBuffer[MSG_HEAD_SIZE:]
-}
-
 func WriteMessagePacket(command uint16, mb []byte, h []byte) []byte {
 	var head MessageHead
 	head.command = command
@@ -36,6 +11,31 @@ func WriteMessagePacket(command uint16, mb []byte, h []byte) []byte {
 
 	b := append(hb, mb...)
 	return b
+}
+
+// helper for writing Message
+type MsgPacketBuffer struct {
+	byteBuffer []byte
+}
+
+func NewMsgPacketBuffer() *MsgPacketBuffer {
+
+	msgBuffer := &MsgPacketBuffer{
+		byteBuffer: make([]byte, MSG_HEAD_SIZE, MSG_BUFFER_SIZE),
+	}
+	return msgBuffer
+}
+
+func (msgBuffer *MsgPacketBuffer) GetByteBuffer() []byte {
+	return msgBuffer.byteBuffer
+}
+
+func (msgBuffer *MsgPacketBuffer) GetHeadBuffer() []byte {
+	return msgBuffer.byteBuffer[:0]
+}
+
+func (msgBuffer *MsgPacketBuffer) GetMsgBuffer() []byte {
+	return msgBuffer.byteBuffer[MSG_HEAD_SIZE:]
 }
 
 type BinMessageCodec struct {
@@ -54,7 +54,7 @@ func (codec *BinMessageCodec) SetReadStream(rs *ByteReadStream) {
 }
 
 func (codec *BinMessageCodec) WriteMessage(command uint16, msg Message) ([]byte, error) {
-	packBuffer := NewMsgByteBuffer()
+	packBuffer := NewMsgPacketBuffer()
 
 	ws := NewByteWriteStream(packBuffer.GetMsgBuffer())
 	msg.WritePacket(ws)
