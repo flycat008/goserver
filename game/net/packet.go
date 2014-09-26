@@ -10,12 +10,12 @@ type PacketHead struct {
 	packDataLen uint16
 }
 
-func (head *PacketHead) WritePacket(ws *ByteWriteStream) {
+func (head *PacketHead) WriteBytes(ws *ByteWriteStream) {
 	ws.WriteUint16(head.packLen)
 	ws.WriteUint16(head.packDataLen)
 }
 
-func (head *PacketHead) ReadPacket(rs *ByteReadStream) bool {
+func (head *PacketHead) ReadBytes(rs *ByteReadStream) bool {
 	if rs.ReadUint16(&head.packLen) == false {
 		return false
 	}
@@ -30,7 +30,7 @@ func ParsePacket(head []byte) (uint, error) {
 
 	var h PacketHead
 	rs := NewByteReadStream(head)
-	h.ReadPacket(rs)
+	h.ReadBytes(rs)
 
 	return uint(h.packDataLen), nil
 }
@@ -52,7 +52,7 @@ func MakePacket(msgbuff []byte, buff []byte) []byte {
 	h.packDataLen = uint16(len(msgbuff))
 
 	ws := NewByteWriteStream(data)
-	h.WritePacket(ws)
+	h.WriteBytes(ws)
 	ws.WriteBytes(msgbuff)
 
 	data = ws.GetByteBuffer()
