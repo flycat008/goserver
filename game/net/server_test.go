@@ -37,14 +37,17 @@ func Test_Server(t *testing.T) {
 	msg.Value64 = 666111888
 	msg.ValueStr = "hello i'm a new bird"
 
-	packBuffer := NewMsgBuffer()
+	msgcodec := NewBinMessageCodec()
+	msgPacket, _ := msgcodec.WriteMessage(66, &msg)
+	/*
+		packBuffer := NewMsgByteBuffer()
 
-	ws := NewByteWriteStream(packBuffer.GetMsgBuffer())
-	msg.WritePacket(ws)
-	mb := ws.GetByteBuffer()
+		ws := NewByteWriteStream(packBuffer.GetMsgBuffer())
+		msg.WritePacket(ws)
+		mb := ws.GetByteBuffer()
 
-	message := WriteMessage(66, mb, packBuffer)
-
+		message := WriteMessage(66, mb, packBuffer.GetHeadBuffer())
+	*/
 	go func() {
 		server.AcceptLoop(func(session *Session) {
 			atomic.AddInt32(&sessionStartCount, 1)
@@ -52,17 +55,22 @@ func Test_Server(t *testing.T) {
 
 			session.ReadLoop(func(b []byte) {
 
+				var codec BinMessageCodec
+
+				rs := NewByteReadStream(b)
+				codec.SetReadStream(rs)
+
 				var outhead MessageHead
 				var outmsg TestMessage
-				rs := NewByteReadStream(b)
-				outhead.ReadPacket(rs)
+				codec.ReadMessageHead(&outhead)
+				codec.ReadMessageBody(&outmsg)
 
+				/*outhead.ReadPacket(rs)
 				msgBuffer := rs.GetRemainBuffer()
 				ms := NewByteReadStream(msgBuffer)
-				outmsg.ReadPacket(ms)
-				fmt.Printf("recv msg %+v\n", outmsg)
+				outmsg.ReadPacket(ms)*/
 
-				//session.AyncSendPacket()
+				fmt.Printf("recv head=[%+v] msg=[%+v]\n", outhead, outmsg)
 
 				atomic.AddInt32(&sessionRequestCount, 1)
 				sessionRequest.Done()
@@ -94,22 +102,22 @@ func Test_Server(t *testing.T) {
 
 	// test session request
 	sessionRequest.Add(1)
-	if err := client1.SendPacket(message); err != nil {
+	if err := client1.SendPacket(msgPacket); err != nil {
 		t.Fatal("Send message failed, Error = %v", err)
 	}
 
 	sessionRequest.Add(1)
-	if err := client2.SendPacket(message); err != nil {
+	if err := client2.SendPacket(msgPacket); err != nil {
 		t.Fatal("Send message failed, Error = %v", err)
 	}
 
 	sessionRequest.Add(1)
-	if err := client1.SendPacket(message); err != nil {
+	if err := client1.SendPacket(msgPacket); err != nil {
 		t.Fatal("Send message failed, Error = %v", err)
 	}
 
 	sessionRequest.Add(1)
-	if err := client2.SendPacket(message); err != nil {
+	if err := client2.SendPacket(msgPacket); err != nil {
 		t.Fatal("Send message failed, Error = %v", err)
 	}
 

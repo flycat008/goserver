@@ -14,14 +14,14 @@ func TestMessageCodec(t *testing.T) {
 	msg.ValueStr = "hello i'm hero"
 
 	// encode message //////////////////////////////
-	packBuffer := NewMsgBuffer()
+	packBuffer := NewMsgByteBuffer()
 
 	ws := NewByteWriteStream(packBuffer.GetMsgBuffer())
 	msg.WritePacket(ws)
 	mb := ws.GetByteBuffer()
 
 	sb := packBuffer.GetByteBuffer()
-	b := WriteMessage(66, mb, packBuffer)
+	b := WriteMessagePacket(66, mb, packBuffer.GetHeadBuffer())
 
 	fmt.Printf("post len(sb)=%d,cap(sb)=%d,addr=%p\n", len(sb), cap(sb), sb)
 	fmt.Printf("post len(b)=%d,cap(b)=%d,addr=%p\n", len(b), cap(b), b)

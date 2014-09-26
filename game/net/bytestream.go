@@ -97,6 +97,10 @@ func (rs *ByteReadStream) HasRemain(dataLen uint) bool {
 	}
 }
 
+func (rs *ByteReadStream) GetRemainLen() uint {
+	return uint(len(rs.byteBuffer[rs.readPos:]))
+}
+
 func (rs *ByteReadStream) GetRemainBuffer() []byte {
 	return rs.byteBuffer[rs.readPos:]
 }
