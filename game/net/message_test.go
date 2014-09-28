@@ -2,6 +2,7 @@ package game
 
 import (
 	"fmt"
+	"reflect"
 	"testing"
 )
 
@@ -12,6 +13,12 @@ func TestMessageCodec(t *testing.T) {
 	msg.Value32 = 777
 	msg.Value64 = 8888888
 	msg.ValueStr = "hello i'm hero"
+	msg.ValueArr[0] = 1
+	msg.ValueArr[1] = 2
+	msg.ValueArr[2] = 3
+	msg.AddToValueIntSlice(3)
+	msg.AddToValueIntSlice(2)
+	msg.AddToValueIntSlice(0)
 
 	// encode message //////////////////////////////
 	packBuffer := NewMsgPacketBuffer()
@@ -39,7 +46,8 @@ func TestMessageCodec(t *testing.T) {
 	msgBuffer := rs.GetRemainBuffer()
 	ms := NewByteReadStream(msgBuffer)
 	outmsg.ReadPacket(ms)
-	if outmsg != msg {
+	//if outmsg != msg {
+	if reflect.DeepEqual(outmsg, msg) == false {
 		t.Errorf("parse Error: outmsg != msg (msg=%+v outmsg=%+v)", msg, outmsg)
 	} else {
 		fmt.Printf("head = %+v outmsg = %+v\n", outhead, outmsg)

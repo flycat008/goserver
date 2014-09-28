@@ -36,6 +36,12 @@ func Test_Server(t *testing.T) {
 	msg.Value32 = 777
 	msg.Value64 = 666111888
 	msg.ValueStr = "hello i'm a new bird"
+	msg.ValueArr[0] = 11
+	msg.ValueArr[1] = 22
+	msg.ValueArr[2] = 33
+	msg.AddToValueIntSlice(3)
+	msg.AddToValueIntSlice(2)
+	msg.AddToValueIntSlice(0)
 
 	msgcodec := NewBinMessageCodec()
 	msgPacket, _ := msgcodec.WriteMessage(66, &msg)
