@@ -1,4 +1,4 @@
-package game
+package net
 
 // code from binary.littleEndian
 type ByteCodec struct{}

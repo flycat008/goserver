@@ -1,4 +1,4 @@
-package game
+package net
 
 type TestMessage struct {
 	Value8        uint8

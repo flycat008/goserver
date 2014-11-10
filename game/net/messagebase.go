@@ -1,4 +1,4 @@
-package game
+package net
 
 // message is a unit for RPC
 const (

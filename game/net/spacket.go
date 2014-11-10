@@ -1,4 +1,4 @@
-package game
+package net
 
 type SessionPacket struct {
 	sessionId   uint32

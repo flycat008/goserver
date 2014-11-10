@@ -1,4 +1,4 @@
-package game
+package net
 
 func WriteMessagePacket(command uint16, mb []byte, h []byte) []byte {
 	var head MessageHead

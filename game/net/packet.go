@@ -1,4 +1,4 @@
-package game
+package net
 
 // packet is a unit for net transfer
 const (
