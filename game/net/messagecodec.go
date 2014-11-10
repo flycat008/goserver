@@ -49,8 +49,8 @@ func NewBinMessageCodec() *BinMessageCodec {
 	return codec
 }
 
-func (codec *BinMessageCodec) SetReadStream(rs *ByteReadStream) {
-	codec.rs = rs
+func (codec *BinMessageCodec) SetReadStream(b []byte) {
+	codec.rs = NewByteReadStream(b)
 }
 
 func (codec *BinMessageCodec) WriteMessage(command uint16, msg Message) ([]byte, error) {

@@ -61,20 +61,14 @@ func Test_Server(t *testing.T) {
 
 			session.ReadLoop(func(b []byte) {
 
-				var codec BinMessageCodec
+				var msgcodec BinMessageCodec
 
-				rs := NewByteReadStream(b)
-				codec.SetReadStream(rs)
+				msgcodec.SetReadStream(b)
 
 				var outhead MessageHead
 				var outmsg TestMessage
-				codec.ReadMessageHead(&outhead)
-				codec.ReadMessageBody(&outmsg)
-
-				/*outhead.ReadPacket(rs)
-				msgBuffer := rs.GetRemainBuffer()
-				ms := NewByteReadStream(msgBuffer)
-				outmsg.ReadPacket(ms)*/
+				msgcodec.ReadMessageHead(&outhead)
+				msgcodec.ReadMessageBody(&outmsg)
 
 				fmt.Printf("recv head=[%+v] msg=[%+v]\n", outhead, outmsg)
 
