@@ -29,7 +29,7 @@ func (head *PacketHead) ReadBytes(rs *ByteReadStream) bool {
 func ParsePacket(head []byte) (uint, error) {
 
 	var h PacketHead
-	rs := NewByteReadStream(head)
+	rs := NewByteReadStream(head, &ByteCodecoder)
 	h.ReadBytes(rs)
 
 	return uint(h.packDataLen), nil
@@ -51,7 +51,7 @@ func MakePacket(msgbuff []byte, buff []byte) []byte {
 	h.packLen = uint16(size)
 	h.packDataLen = uint16(len(msgbuff))
 
-	ws := NewByteWriteStream(data)
+	ws := NewByteWriteStream(data, &ByteCodecoder)
 	h.WriteBytes(ws)
 	ws.WriteBytes(msgbuff)
 

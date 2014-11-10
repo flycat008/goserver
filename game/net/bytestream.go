@@ -18,10 +18,10 @@ type ByteWriteStream struct {
 	bo         *ByteCodec
 }
 
-func NewByteWriteStream(buffer []byte) *ByteWriteStream {
+func NewByteWriteStream(buffer []byte, bo *ByteCodec) *ByteWriteStream {
 	ws := &ByteWriteStream{
 		byteBuffer: buffer,
-		bo:         &ByteCodecoder,
+		bo:         bo,
 	}
 	return ws
 }
@@ -75,11 +75,11 @@ type ByteReadStream struct {
 	bo         *ByteCodec
 }
 
-func NewByteReadStream(buffer []byte) *ByteReadStream {
+func NewByteReadStream(buffer []byte, bo *ByteCodec) *ByteReadStream {
 	rs := &ByteReadStream{
 		byteBuffer: buffer,
 		readPos:    0,
-		bo:         &ByteCodecoder,
+		bo:         bo,
 	}
 	return rs
 }

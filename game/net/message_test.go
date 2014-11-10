@@ -23,7 +23,7 @@ func TestMessageCodec(t *testing.T) {
 	// encode message //////////////////////////////
 	packBuffer := NewMsgPacketBuffer()
 
-	ws := NewByteWriteStream(packBuffer.GetMsgBuffer())
+	ws := NewByteWriteStream(packBuffer.GetMsgBuffer(), &ByteCodecoder)
 	msg.WritePacket(ws)
 	mb := ws.GetByteBuffer()
 
@@ -40,11 +40,11 @@ func TestMessageCodec(t *testing.T) {
 	// decode message //////////////////////////////
 	var outhead MessageHead
 	var outmsg TestMessage
-	rs := NewByteReadStream(b)
+	rs := NewByteReadStream(b, &ByteCodecoder)
 	outhead.ReadPacket(rs)
 
 	msgBuffer := rs.GetRemainBuffer()
-	ms := NewByteReadStream(msgBuffer)
+	ms := NewByteReadStream(msgBuffer, &ByteCodecoder)
 	outmsg.ReadPacket(ms)
 	//if outmsg != msg {
 	if reflect.DeepEqual(outmsg, msg) == false {

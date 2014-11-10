@@ -9,7 +9,7 @@ import (
 	"testing"
 )
 
-func Test_Server(t *testing.T) {
+func TestServer(t *testing.T) {
 	proto := PacketN(SIZE_OF_PACKETHEAD, ParsePacket, MakePacket, &ByteCodecoder)
 
 	server, err0 := NewNetServer("tcp", "127.0.0.1:8080", proto)

@@ -5,7 +5,7 @@ func WriteMessagePacket(command uint16, mb []byte, h []byte) []byte {
 	head.command = command
 	head.messageLen = uint16(len(mb))
 
-	hs := NewByteWriteStream(h)
+	hs := NewByteWriteStream(h, &ByteCodecoder)
 	head.WritePacket(hs)
 	hb := hs.GetByteBuffer()
 
@@ -50,13 +50,13 @@ func NewBinMessageCodec() *BinMessageCodec {
 }
 
 func (codec *BinMessageCodec) SetReadStream(b []byte) {
-	codec.rs = NewByteReadStream(b)
+	codec.rs = NewByteReadStream(b, &ByteCodecoder)
 }
 
 func (codec *BinMessageCodec) WriteMessage(command uint16, msg Message) ([]byte, error) {
 	packBuffer := NewMsgPacketBuffer()
 
-	ws := NewByteWriteStream(packBuffer.GetMsgBuffer())
+	ws := NewByteWriteStream(packBuffer.GetMsgBuffer(), &ByteCodecoder)
 	msg.WritePacket(ws)
 	mb := ws.GetByteBuffer()
 
